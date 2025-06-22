@@ -53,7 +53,7 @@ jobs:
 
         if find . -type f -name 'libmklml_intel.so' -print -quit | grep -q .; then
           echo "libmklml_intel.so found, patching libdnnl.so.3..."
-          patchelf --add-needed libmklml_intel.so libdnnl.so.3
+          patchelf --add-needed libmklml_intel.so native/libdnnl.so.3
         else
           echo "libmklml_intel.so not found, skip patchelf."
         fi
