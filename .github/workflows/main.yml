@@ -49,20 +49,14 @@ jobs:
     - name: Match rpath(linux only)
       if: matrix.runs-on == 'ubuntu-22.04'
       run: |
-        cd ./tests/Sdcb.PaddleOCR.Tests/bin/Release/net8.0/runtimes/linux-x64/native
-        patchelf --add-needed libmklml_intel.so libdnnl.so.3
+        cd ./tests/Sdcb.PaddleOCR.Tests/bin/Release/net8.0/runtimes/linux-x64
 
-        # for so in $(find . -type f -name '*.so*'); do
-        #   echo "================ $so ================"
-        #   patchelf --set-rpath '$ORIGIN' "$so" || true
-        #   echo
-        # done
-
-        # for so in $(find . -type f -name '*.so*'); do
-        #   echo "================ $so ================"
-        #   patchelf --print-rpath "$so" || true
-        #   echo
-        # done
+        if find . -type f -name 'libmklml_intel.so' -print -quit | grep -q .; then
+          echo "libmklml_intel.so found, patching libdnnl.so.3..."
+          patchelf --add-needed libmklml_intel.so libdnnl.so.3
+        else
+          echo "libmklml_intel.so not found, skip patchelf."
+        fi
 
     - name: Test
       shell: bash
