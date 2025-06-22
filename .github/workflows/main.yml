@@ -52,8 +52,8 @@ jobs:
         cd ./tests/Sdcb.PaddleOCR.Tests/bin/Release/net8.0/runtimes/linux-x64
 
         if find . -type f -name 'libmklml_intel.so' -print -quit | grep -q .; then
-          echo "libmklml_intel.so found, patching libdnnl.so.3..."
-          patchelf --add-needed libmklml_intel.so native/libdnnl.so.3
+          echo "libmklml_intel.so found, patching elf..."
+          patchelf --add-needed libmklml_intel.so native/libpaddle_inference_c.so
         else
           echo "libmklml_intel.so not found, skip patchelf."
         fi
