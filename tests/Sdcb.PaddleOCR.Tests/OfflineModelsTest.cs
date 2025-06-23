@@ -14,7 +14,10 @@ public class OfflineModelsTest(ITestOutputHelper console)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.X64)
         {
-            // macOS is onnx only, bug buggy for EnglishV3, so skip this test
+            // macOS is onnx only, bug buggy for in memory EnglishV3, so skip this test
+            // E0623 03:57:55.708065 159170560 onnxruntime_predictor.cc:354] Got invalid dimensions for input: x for the following indices
+            // index: 2 Got: 320 Expected: 960
+            // Please fix either the inputs or the model.
             console.WriteLine("Skipping EnglishV3 test on macOS x64 due to known issues with ONNX model.");
             return;
         }
