@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a full OCR model composed of a detection, classification and recognition model.
 /// </summary>
-public class FullOcrModel
+public record FullOcrModel
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="FullOcrModel"/> class.
