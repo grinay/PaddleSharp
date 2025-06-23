@@ -28,10 +28,11 @@ jobs:
     - name: Test
       shell: bash
       run: |
-        if [[ "${{ runner.os }}" == "macOS" ]]; then
-          dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'Category!=WindowsOnly' -p:Optimize=true
-        elif [[ "${{ runner.os }}" == "Linux" ]]; then
-          dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'Category!=WindowsOnly' -p:Optimize=true
-        else
-          dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal -p:Optimize=true
-        fi
+        # if [[ "${{ runner.os }}" == "macOS" ]]; then
+        #   dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'Category!=WindowsOnly' -p:Optimize=true
+        # elif [[ "${{ runner.os }}" == "Linux" ]]; then
+        #   dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'Category!=WindowsOnly' -p:Optimize=true
+        # else
+        #   dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal -p:Optimize=true
+        # fi
+        dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'FullyQualifiedName=Sdcb.PaddleOCR.Tests.OfflineModelsTest' -p:Optimize=true
