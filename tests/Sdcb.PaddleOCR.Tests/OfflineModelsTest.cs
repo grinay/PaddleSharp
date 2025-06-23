@@ -1,26 +1,27 @@
 using OpenCvSharp;
 using Sdcb.PaddleOCR.Models;
 using Sdcb.PaddleOCR.Models.Local;
+using System.Runtime.InteropServices;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Sdcb.PaddleOCR.Tests;
 
-public class OfflineModelsTest
+public class OfflineModelsTest(ITestOutputHelper console)
 {
-    private readonly ITestOutputHelper _console;
-
-    public OfflineModelsTest(ITestOutputHelper console)
+    [Fact]
+    public void FastCheckOCREnglishV3()
     {
-        _console = console;
-    }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.X64)
+        {
+            // macOS is onnx only, bug buggy for EnglishV3, so skip this test
+            console.WriteLine("Skipping EnglishV3 test on macOS x64 due to known issues with ONNX model.");
+            return;
+        }
 
-    //[Fact]
-    //public void FastCheckOCREnglishV3()
-    //{
-    //    FullOcrModel model = LocalFullModels.EnglishV3;
-    //    FastCheck(model);
-    //}
+        FullOcrModel model = LocalFullModels.EnglishV3;
+        FastCheck(model);
+    }
 
     [Fact]
     public void FastCheckOCREnglishV4()
@@ -59,10 +60,10 @@ public class OfflineModelsTest
             using (Mat src = Cv2.ImDecode(sampleImageData, ImreadModes.Color))
             {
                 PaddleOcrResult result = all.Run(src);
-                _console.WriteLine("Detected all texts: \n" + result.Text);
+                console.WriteLine("Detected all texts: \n" + result.Text);
                 foreach (PaddleOcrResultRegion region in result.Regions)
                 {
-                    _console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
+                    console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
                 }
             }
         }
@@ -88,10 +89,10 @@ public class OfflineModelsTest
             using (Mat src = Cv2.ImDecode(sampleImageData, ImreadModes.Color))
             {
                 PaddleOcrResult result = await all.Run(src);
-                _console.WriteLine("Detected all texts: \n" + result.Text);
+                console.WriteLine("Detected all texts: \n" + result.Text);
                 foreach (PaddleOcrResultRegion region in result.Regions)
                 {
-                    _console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
+                    console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
                 }
             }
         }
