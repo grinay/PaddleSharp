@@ -61,7 +61,11 @@ jobs:
     - name: Test
       shell: bash
       run: |
-        if [[ "${{ runner.os }}" != "Windows" ]]; then
+        if [[ "${{ runner.os }}" == "macOS" ]]; then
+          dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal --filter 'Category!=WindowsOnly'
+        elif [[ "${{ runner.os }}" == "Linux" ]]; then
+          ulimit -c unlimited
+          export GDB_STACKTRACE=1
           dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal --filter 'Category!=WindowsOnly'
         else
           dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal
