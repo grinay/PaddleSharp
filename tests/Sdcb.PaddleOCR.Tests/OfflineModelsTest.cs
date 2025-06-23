@@ -96,7 +96,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
     public async Task QueuedOCR()
     {
         Console.WriteLine($"Running QueuedOCR test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
-        FullOcrModel model = LocalFullModels.EnglishV4;
+        FullOcrModel model = LocalFullModels.ChineseV5;
 
         // from: https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Home-page-extension-visual-updated.png
         byte[] sampleImageData = File.ReadAllBytes(@"./samples/vsext.png");
