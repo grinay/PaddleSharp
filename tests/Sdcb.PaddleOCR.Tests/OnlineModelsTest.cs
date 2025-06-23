@@ -41,12 +41,27 @@ public class OnlineModelsTest(ITestOutputHelper console)
     //}
 
     [Fact]
-    public async Task V4MkldnnRecTest()
+    public async Task V4DetOnly()
     {
-        RecognizationModel recModel = await LocalDictOnlineRecognizationModel.ChineseV3.DownloadAsync();
+        DetectionModel detModel = await OnlineDetectionModel.ChineseV4.DownloadAsync();
 
         using (Mat src = Cv2.ImRead(@"./samples/5ghz.jpg"))
-        using (PaddleOcrRecognizer r = new PaddleOcrRecognizer(recModel, PaddleDevice.Mkldnn()))
+        using (PaddleOcrDetector r = new(detModel))
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            RotatedRect[] rects = r.Run(src);
+            console.WriteLine($"elapsed={sw.ElapsedMilliseconds}ms");
+            console.WriteLine($"Detected {rects.Length} rects.");
+        }
+    }
+
+    [Fact]
+    public async Task V4RecOnly()
+    {
+        RecognizationModel recModel = await LocalDictOnlineRecognizationModel.ChineseV4.DownloadAsync();
+
+        using (Mat src = Cv2.ImRead(@"./samples/5ghz.jpg"))
+        using (PaddleOcrRecognizer r = new(recModel))
         {
             Stopwatch sw = Stopwatch.StartNew();
             PaddleOcrRecognizerResult result = r.Run(src);
