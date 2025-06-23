@@ -54,6 +54,7 @@ public class OfflineModelsTest
             Enable180Classification = false,
         })
         {
+            all.Detector.MaxSize = 960;
             // Load local file by following code:
             // using (Mat src2 = Cv2.ImRead(@"C:\test.jpg"))
             using (Mat src = Cv2.ImDecode(sampleImageData, ImreadModes.Color))
