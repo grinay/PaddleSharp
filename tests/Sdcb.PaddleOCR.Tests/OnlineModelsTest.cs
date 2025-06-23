@@ -13,7 +13,7 @@ public class OnlineModelsTest(ITestOutputHelper console)
     [Fact]
     public async Task FastCheckOCR()
     {
-        FullOcrModel model = await OnlineFullModels.EnglishV3.DownloadAsync();
+        FullOcrModel model = await OnlineFullModels.EnglishV4.DownloadAsync();
 
         // from: https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Home-page-extension-visual-updated.png
         byte[] sampleImageData = File.ReadAllBytes(@"./samples/vsext.png");
