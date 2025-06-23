@@ -3,6 +3,7 @@ using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR.Models;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Sdcb.PaddleOCR;
 
@@ -66,7 +67,14 @@ public class PaddleOcrAll : IDisposable
         Detector = new PaddleOcrDetector(model.DetectionModel, detectorDevice ?? model.DetectionModel.DefaultDevice);
         if (model.ClassificationModel != null)
         {
-            Classifier = new PaddleOcrClassifier(model.ClassificationModel, classifierDevice ?? model.ClassificationModel.DefaultDevice);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.Arm64)
+            {
+                Console.WriteLine("Skipping classifier model on macOS arm64 due to known issues: https://github.com/PaddlePaddle/Paddle/issues/72413");
+            }
+            else
+            {
+                Classifier = new PaddleOcrClassifier(model.ClassificationModel, classifierDevice ?? model.ClassificationModel.DefaultDevice);
+            }
         }
         Recognizer = new PaddleOcrRecognizer(model.RecognizationModel, recognizerDevice ?? model.RecognizationModel.DefaultDevice);
     }

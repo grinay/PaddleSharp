@@ -12,7 +12,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public void FastCheckOCREnglishV3()
     {
-        console.WriteLine($"Running EnglishV3 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Console.WriteLine($"Running EnglishV3 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             if (RuntimeInformation.OSArchitecture == Architecture.X64)
@@ -46,7 +46,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public void FastCheckOCREnglishV4()
     {
-        console.WriteLine($"Running EnglishV4 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Console.WriteLine($"Running EnglishV4 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         FullOcrModel model = LocalFullModels.EnglishV4;
         FastCheck(model);
     }
@@ -54,7 +54,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public void FastCheckOCRChineseV4()
     {
-        console.WriteLine($"Running ChineseV4 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Console.WriteLine($"Running ChineseV4 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         FullOcrModel model = LocalFullModels.ChineseV4;
         FastCheck(model);
     }
@@ -62,7 +62,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public void FastCheckOCRChineseV5()
     {
-        console.WriteLine($"Running ChineseV5 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Console.WriteLine($"Running ChineseV5 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         FullOcrModel model = LocalFullModels.ChineseV5;
         FastCheck(model);
     }
@@ -95,7 +95,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public async Task QueuedOCR()
     {
-        console.WriteLine($"Running QueuedOCR test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Console.WriteLine($"Running QueuedOCR test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         FullOcrModel model = LocalFullModels.EnglishV4;
 
         // from: https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Home-page-extension-visual-updated.png
