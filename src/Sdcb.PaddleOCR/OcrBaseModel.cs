@@ -33,10 +33,7 @@ public abstract class OcrBaseModel
     /// <summary>
     /// Gets the default device for the model.
     /// </summary>
-    public virtual Action<PaddleConfig> DefaultDevice =>
-    RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-        ? PaddleDevice.Blas()
-        : PaddleDevice.Mkldnn();
+    public virtual Action<PaddleConfig> DefaultDevice => PaddleDevice.PlatformDefault;
 
     /// <summary>
     /// Configure the device related config of the <see cref="PaddleConfig"/>.

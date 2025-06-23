@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Sdcb.PaddleInference;
 
@@ -173,4 +174,16 @@ public static class PaddleDevice
         cfg.MemoryOptimized = memoryOptimized;
         //cfg.GLogEnabled = glogEnabled;
     }
+
+    /// <summary>
+    /// Gets the default device configuration for Paddle operations based on the current operating system and
+    /// architecture.
+    /// </summary>
+    public static Action<PaddleConfig> PlatformDefault => RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? RuntimeInformation.OSArchitecture switch
+        {
+            Architecture.X64 => Onnx(),
+            _ => Blas(),
+        }
+        : Mkldnn();
 }
