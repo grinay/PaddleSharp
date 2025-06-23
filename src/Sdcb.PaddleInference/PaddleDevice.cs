@@ -185,5 +185,5 @@ public static class PaddleDevice
             Architecture.X64 => Onnx(),
             _ => Blas(),
         }
-        : Onnx();
+        : Mkldnn();
 }

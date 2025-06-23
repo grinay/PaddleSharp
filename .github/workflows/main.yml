@@ -5,7 +5,7 @@ on:
       - master
       - feature/linux
     paths:
-      - 'src/**'
+      - src/**/*
       - .github/workflows/main.yml
   workflow_dispatch:
   
