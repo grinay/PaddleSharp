@@ -15,19 +15,19 @@ public class OfflineModelsTest
         _console = console;
     }
 
-    [Fact]
-    public void FastCheckOCREnglishV3()
-    {
-        FullOcrModel model = LocalFullModels.EnglishV3;
-        FastCheck(model);
-    }
-
     //[Fact]
-    //public void FastCheckOCREnglishV4()
+    //public void FastCheckOCREnglishV3()
     //{
-    //    FullOcrModel model = LocalFullModels.EnglishV4;
+    //    FullOcrModel model = LocalFullModels.EnglishV3;
     //    FastCheck(model);
     //}
+
+    [Fact]
+    public void FastCheckOCREnglishV4()
+    {
+        FullOcrModel model = LocalFullModels.EnglishV4;
+        FastCheck(model);
+    }
 
     //[Fact]
     //public void FastCheckOCRChineseV4()
