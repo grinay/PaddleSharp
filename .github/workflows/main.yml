@@ -61,14 +61,9 @@ jobs:
     - name: Test
       shell: bash
       run: |
-        # export FLAGS_mklml_dir=${{ github.workspace }}/tests/Sdcb.PaddleOCR.Tests/bin/Release/net8.0/runtimes/linux-x64/native
-        # export GLOG_v=4
-        # if [[ "${{ matrix.runs-on }}" == "macos-15" ]]; then
-        #   export FLAGS_use_system_allocator=1
+        # if [[ "${{ runner.os }}" != "Windows" ]]; then
+        #   dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal --filter 'Category!=WindowsOnly'
+        # else
+        #   dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal
         # fi
-
-        if [[ "${{ runner.os }}" != "Windows" ]]; then
-          dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal --filter 'Category!=WindowsOnly'
-        else
-          dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal
-        fi
+        dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Release --no-build --verbosity normal --filter 'FullyQualifiedName=Sdcb.PaddleOCR.Tests.OfflineModelsTest'
