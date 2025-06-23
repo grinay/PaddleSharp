@@ -12,7 +12,7 @@ public class OnlineModelsTest(ITestOutputHelper console)
     [Fact]
     public async Task FastCheckOCR()
     {
-        // EnglishV3 is not working in macos-arm64, so we use EnglishV4 instead: https://github.com/PaddlePaddle/Paddle/issues/72413
+        // EnglishV3/ChineseV4 is not working in macos-arm64, so we use EnglishV4 instead: https://github.com/PaddlePaddle/Paddle/issues/72413
         // ----------------------
         // Error Message Summary:
         // ----------------------
@@ -20,7 +20,7 @@ public class OnlineModelsTest(ITestOutputHelper console)
         //   [Hint: Expected iter != allocators.end(), but received iter == allocators.end().] (at /Users/runner/work/PaddleSharp/PaddleSharp/paddle-src/paddle/phi/core/memory/allocation/allocator_facade.cc:381)
         //   [operator < matmul > error]
         // The active test run was aborted. Reason: Test host process crashed
-        FullOcrModel model = await OnlineFullModels.ChineseV4.DownloadAsync();
+        FullOcrModel model = await OnlineFullModels.EnglishV4.DownloadAsync();
 
         // from: https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Home-page-extension-visual-updated.png
         byte[] sampleImageData = File.ReadAllBytes(@"./samples/vsext.png");
