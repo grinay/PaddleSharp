@@ -36,4 +36,4 @@ jobs:
         #   dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal -p:Optimize=true
         # fi
         export GLOG_v=3
-        dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'FullyQualifiedName~OnlineModelsTest' -p:Optimize=true
+        dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'FullyQualifiedName~OfflineModelsTest' -p:Optimize=true
