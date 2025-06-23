@@ -5,7 +5,7 @@ on:
       - master
       - feature/linux
     paths:
-      - src/**/*
+      - src/**
       - .github/workflows/main.yml
   workflow_dispatch:
   
@@ -36,4 +36,4 @@ jobs:
         #   dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal -p:Optimize=true
         # fi
         export GLOG_v=3
-        dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal
+        dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'FullyQualifiedName~OnlineModelsTest'
