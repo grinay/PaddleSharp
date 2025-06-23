@@ -35,11 +35,7 @@ public abstract class OcrBaseModel
     /// </summary>
     public virtual Action<PaddleConfig> DefaultDevice =>
     RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-        ? RuntimeInformation.OSArchitecture switch
-        {
-            Architecture.X64 => PaddleDevice.Onnx(),
-            _ => PaddleDevice.Blas(),
-        }
+        ? PaddleDevice.Blas()
         : PaddleDevice.Mkldnn();
 
     /// <summary>
