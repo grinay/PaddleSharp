@@ -5,11 +5,8 @@
 | NuGet Package 💼               | Version 📌                                                                                                                              | Description 📚                                                |
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | Sdcb.PaddleOCR                | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleOCR.svg)](https://nuget.org/packages/Sdcb.PaddleOCR)                               | PaddleOCR library(based on Sdcb.PaddleInference) ⚙️           |
-| Sdcb.PaddleOCR.Models.Shared  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleOCR.Models.Shared.svg)](https://nuget.org/packages/Sdcb.PaddleOCR.Models.Shared)   | Shared models/utils for both Online and Local versions 🔗     |
 | Sdcb.PaddleOCR.Models.Online  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleOCR.Models.Online.svg)](https://nuget.org/packages/Sdcb.PaddleOCR.Models.Online)   | Online PaddleOCR models, will download when first using 🌐    |
 | Sdcb.PaddleOCR.Models.Local   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleOCR.Models.Local.svg)](https://nuget.org/packages/Sdcb.PaddleOCR.Models.Local)     | Local models, relies on Shared, LocalV3 and LocalV4 models 🏠 |
-| Sdcb.PaddleOCR.Models.LocalV3 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleOCR.Models.LocalV3.svg)](https://nuget.org/packages/Sdcb.PaddleOCR.Models.LocalV3) | Full local v3 models, include multiple language(~105MB) 🗺️    |
-| Sdcb.PaddleOCR.Models.LocalV4 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleOCR.Models.LocalV4.svg)](https://nuget.org/packages/Sdcb.PaddleOCR.Models.LocalV4) | Full local v4 models, include multiple language(~111MB) 🌐    |
 
 ## Language supports
 
@@ -103,29 +100,22 @@ Just replace the `.ChineseV3` in demo code with your speicific language, then yo
    }
    ```
 
-### Linux(Ubuntu 22.04): Detection and Recognition(All)
-1. Use `sdflysha/sdflysha/dotnet6-paddle:2.5.0-ubuntu22` to replace `mcr.microsoft.com/dotnet/aspnet:6.0` in `Dockerfile` as docker base image.
+### non-Windows support
+Just install the following NuGet packages, and run the same code as Windows:
+```bash
+# For linux-x64
+Install-Package Sdcb.PaddleInference.runtime.linux-x64.mkl
 
-The build steps for `sdflysha/dotnet6-paddle:2.5.0-ubuntu22` was described [here](./build/docker/dotnet6-paddle/Dockerfile).
+# For linux-arm64
+Install-Package Sdcb.PaddleInference.runtime.linux-arm64
 
-2. Install NuGet Packages:
-```ps
-dotnet add package Sdcb.PaddleOCR.Models.Local
+# For macOS-x64
+Install-Package Sdcb.PaddleInference.runtime.osx-x64
+
+# For macOS-arm64(m1/m2/m3/m4 based)
+Install-Package Sdcb.PaddleInference.runtime.osx-arm64
 ```
 
-Please aware in `Linux`, the native binding library is not required, instead, you should compile your own `OpenCV`/`PaddleInference` library, or just use the `Docker` image.
-
-3. write following C# code to get result(also can be exactly the same as windows):
-```csharp
-FullOcrModel model = LocalFullModels.ChineseV3;
-using (PaddleOcrAll all = new PaddleOcrAll(model, PaddleDevice.Mkldnn()))
-// Load in-memory data by following code:
-// using (Mat src = Cv2.ImDecode(sampleImageData, ImreadModes.Color))
-using (Mat src = Cv2.ImRead(@"/app/test.jpg"))
-{
-    Console.WriteLine(all.Run(src).Text);
-}
-```
 
 ### Detection Only
 ```csharp
@@ -133,8 +123,8 @@ using (Mat src = Cv2.ImRead(@"/app/test.jpg"))
 // Sdcb.PaddleInference
 // Sdcb.PaddleOCR
 // Sdcb.PaddleOCR.Models.Local
-// Sdcb.PaddleInference.runtime.win64.mkl (required in Windows, linux using docker)
-// OpenCvSharp4.runtime.win (required in Windows, linux using docker)
+// Sdcb.PaddleInference.runtime.win64.mkl
+// OpenCvSharp4.runtime.win
 byte[] sampleImageData;
 string sampleImageUrl = @"https://www.tp-link.com.cn/content/images2017/gallery/4288_1920.jpg";
 using (HttpClient http = new HttpClient())
@@ -162,8 +152,8 @@ using (Mat src = Cv2.ImDecode(sampleImageData, ImreadModes.Color))
 // Sdcb.PaddleInference
 // Sdcb.PaddleOCR
 // Sdcb.PaddleOCR.Models.Local
-// Sdcb.PaddleInference.runtime.win64.mkl (required in Windows, linux using docker)
-// OpenCvSharp4.runtime.win (required in Windows, linux using docker)
+// Sdcb.PaddleInference.runtime.win64.mkl
+// OpenCvSharp4.runtime.win
 using PaddleOcrTableRecognizer tableRec = new(LocalTableRecognitionModel.ChineseMobileV2_SLANET);
 using Mat src = Cv2.ImRead(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "table.jpg"));
 // Table detection
@@ -192,7 +182,7 @@ There is 3 steps to do OCR:
 ## Optimize parameters and performance hints
 
 ### PaddleConfig.MkldnnCacheCapacity
-Default value: `1`
+Default value: `10`
 
 This value has a positive correlation to the peak of memory usage that used by `mkldnn` and a negative correlation to the performance when providing different images.
 
@@ -215,7 +205,7 @@ This allows detect any rotated texts. If your subject is 0 degree text (like sca
 
 
 ### PaddleOcrAll.Detector.MaxSize
-Default value: `1536`
+Default value: `960`
 
 This effect the the max size of step #1, lower this value can improve performance and reduce memory usage, but will also lower the accurancy.
 
@@ -269,23 +259,6 @@ public class OcrController : Controller
     }
 }
 ```
-
-### How to migrate previous old version to latest 2.6.0.1?
-
-* Remove `PaddleConfig.Default.*` settings because it's delted in `2.6.0.1`
-* Add one of following config in 2nd parameter in `PaddleOcrAll`:
-  * `PaddleDevice.Openblas()`
-  * `PaddleDevice.Mkldnn()`
-  * `PaddleDevice.Onnx()`
-  * `PaddleDevice.Gpu()`
-  * `PaddleDevice.Gpu().And(PaddleDevice.TensorRt(...))`
-
-  ![image](https://user-images.githubusercontent.com/1317141/206610787-4d31057f-9d7f-4235-a2c4-433322e21bb6.png)
-
-## How to migrate < 2.7.0 version to latest 2.7.0 when using LocalV3?
-* Uninstall NuGet package: Sdcb.PaddleOCR.Models.LocalV3
-* Install NuGet pakcage: Sdcb.PaddleOCR.Models.Local
-* Update namespaces from `Sdcb.PaddleOCR.Models.LocalV3` to `Sdcb.PaddleOCR.Models.Local`
 
 ### TensorRT 🚄
 
