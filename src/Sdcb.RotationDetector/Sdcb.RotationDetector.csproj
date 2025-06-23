@@ -17,6 +17,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReadmeFile>rotation-detection.md</PackageReadmeFile>
+    <Configurations>Debug;Release;Test</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="models\text_image_orientation_infer\inference.pdiparams" />
@@ -36,8 +37,8 @@
 
   <ItemGroup>
     <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
-    <PackageReference Include="Sdcb.PaddleInference" Version="2.5.0" Condition="'$(Configuration)' != 'Debug'" />
-    <ProjectReference Include="..\Sdcb.PaddleInference\Sdcb.PaddleInference.csproj" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Sdcb.PaddleInference" Version="2.5.0" Condition="'$(Configuration)' == 'Release'" />
+    <ProjectReference Include="..\Sdcb.PaddleInference\Sdcb.PaddleInference.csproj" Condition="'$(Configuration)' != 'Release'" />
   </ItemGroup>
 
 </Project>

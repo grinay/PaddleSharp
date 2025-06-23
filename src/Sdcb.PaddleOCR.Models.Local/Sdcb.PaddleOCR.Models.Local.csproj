@@ -17,6 +17,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Configurations>Debug;Release;Test</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,13 +37,13 @@
     <ProjectReference Include="..\Sdcb.PaddleOCR\Sdcb.PaddleOCR.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\Sdcb.PaddleOCR.Models.LocalV3\Sdcb.PaddleOCR.Models.LocalV3.csproj" />
     <ProjectReference Include="..\Sdcb.PaddleOCR.Models.LocalV4\Sdcb.PaddleOCR.Models.LocalV4.csproj" />
     <ProjectReference Include="..\Sdcb.PaddleOCR.Models.LocalV5\Sdcb.PaddleOCR.Models.LocalV5.csproj" />
     
     <ProjectReference Include="..\Sdcb.PaddleOCR.Models.Shared\Sdcb.PaddleOCR.Models.Shared.csproj" />
-    <!--<ProjectReference Include="..\Sdcb.PaddleOCR\Sdcb.PaddleOCR.csproj" />-->
+    <ProjectReference Include="..\Sdcb.PaddleOCR\Sdcb.PaddleOCR.csproj" />
     
   </ItemGroup>
 
@@ -54,5 +55,4 @@
     <PackageReference Include="Sdcb.PaddleOCR.Models.Shared" Version="2.7.0.1" />
     <!--<PackageReference Include="Sdcb.PaddleOCR" Version="3.0.0" />-->
   </ItemGroup>
-
 </Project>
