@@ -1,23 +1,23 @@
 using Sdcb.PaddleOCR.Models.Details;
 using Sdcb.PaddleOCR.Models.Online;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Xunit.Abstractions;
 
 namespace Sdcb.Paddle2Onnx.Tests;
 
 [Trait("Category", "WindowsOnly")]
-public class TestExport
+public class TestExport(ITestOutputHelper console)
 {
-    private readonly ITestOutputHelper _console;
-
-    public TestExport(ITestOutputHelper console)
-    {
-        _console = console;
-    }
-
     [Fact]
     public async Task NormalOCRDetectionModel_Should_CanExport()
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            console.WriteLine("Skipping test on non-Windows platform.");
+            return;
+        }
+
         // Arrange
         FileDetectionModel fd = await OnlineDetectionModel.ChineseV3.DownloadAsync();
         string modelFile = Path.Combine(fd.DirectoryPath, "inference.pdmodel");
@@ -33,6 +33,12 @@ public class TestExport
     [Fact]
     public async Task NormalOCRDetectionModelBuffer_Should_CanExport()
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            console.WriteLine("Skipping test on non-Windows platform.");
+            return;
+        }
+
         // Arrange
         FileDetectionModel fd = await OnlineDetectionModel.ChineseV3.DownloadAsync();
         string modelFile = Path.Combine(fd.DirectoryPath, "inference.pdmodel");
@@ -45,26 +51,5 @@ public class TestExport
 
         // Assert
         Assert.NotEmpty(onnxModel);
-    }
-
-    [Fact(
-        Skip = "Memory leak test"
-        )]
-    public async Task ExportMemory_Should_NoLeak()
-    {
-        // Arrange
-        FileDetectionModel fd = await OnlineDetectionModel.ChineseV3.DownloadAsync();
-        string modelFile = Path.Combine(fd.DirectoryPath, "inference.pdmodel");
-        string paramsFile = Path.Combine(fd.DirectoryPath, "inference.pdiparams");
-        byte[] modelBuffer = File.ReadAllBytes(modelFile);
-        byte[] paramsBuffer = File.ReadAllBytes(paramsFile);
-
-        // Act
-        for (int i = 0; i < 100; ++i)
-        {
-            byte[] onnxModel = Paddle2OnnxConverter.ConvertToOnnx(modelBuffer, paramsBuffer);
-            GC.Collect();
-            _console.WriteLine($"{i}, onnx size: {onnxModel.Length}, memory: {Process.GetCurrentProcess().PrivateMemorySize64}");
-        }
     }
 }
