@@ -53,11 +53,6 @@ public abstract class RecognizationModel : OcrBaseModel
         _ => throw new ArgumentOutOfRangeException($"Unknown OCR model version: {Version}."),
     };
 
-    /// <summary>
-    /// Gets the default device for the classification model.
-    /// </summary>
-    public override Action<PaddleConfig> DefaultDevice => PaddleDevice.Mkldnn();
-
     /// <inheritdoc/>
     public override void ConfigureDevice(PaddleConfig config, Action<PaddleConfig>? configure = null)
     {
