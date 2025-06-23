@@ -3,6 +3,7 @@ using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR.Models;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Sdcb.PaddleOCR;
 
@@ -55,9 +56,9 @@ public class PaddleOcrAll : IDisposable
     /// Initializes a new instance of the <see cref="PaddleOcrAll"/> class with the specified PaddlePaddle models and device configurations for each model.
     /// </summary>
     /// <param name="model">The full OCR model containing detection, classification, and recognition models.</param>
-    /// <param name="detectorDevice">The device configuration for running the detection model, default: Onnx.</param>
+    /// <param name="detectorDevice">The device configuration for running the detection model, default: Mkldnn.</param>
     /// <param name="classifierDevice">The device configuration for running the classification model, default: Mkldnn.</param>
-    /// <param name="recognizerDevice">The device configuration for running the recognition model, default: Onnx.</param>
+    /// <param name="recognizerDevice">The device configuration for running the recognition model, default: Mkldnn.</param>
     public PaddleOcrAll(FullOcrModel model,
         Action<PaddleConfig>? detectorDevice = null,
         Action<PaddleConfig>? classifierDevice = null,
@@ -66,7 +67,14 @@ public class PaddleOcrAll : IDisposable
         Detector = new PaddleOcrDetector(model.DetectionModel, detectorDevice ?? model.DetectionModel.DefaultDevice);
         if (model.ClassificationModel != null)
         {
-            Classifier = new PaddleOcrClassifier(model.ClassificationModel, classifierDevice ?? model.ClassificationModel.DefaultDevice);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.Arm64)
+            {
+                Console.WriteLine("Skipping classifier model on macOS arm64 due to known issues: https://github.com/PaddlePaddle/Paddle/issues/72413");
+            }
+            else
+            {
+                Classifier = new PaddleOcrClassifier(model.ClassificationModel, classifierDevice ?? model.ClassificationModel.DefaultDevice);
+            }
         }
         Recognizer = new PaddleOcrRecognizer(model.RecognizationModel, recognizerDevice ?? model.RecognizationModel.DefaultDevice);
     }

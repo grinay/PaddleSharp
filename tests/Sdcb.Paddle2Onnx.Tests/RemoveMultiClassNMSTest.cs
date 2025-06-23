@@ -1,21 +1,21 @@
 using Sdcb.PaddleOCR.Models.Online;
+using System.Runtime.InteropServices;
 using Xunit.Abstractions;
 
 namespace Sdcb.Paddle2Onnx.Tests;
 
-[Trait("Category", "LinuxExclude")]
-public class RemoveMultiClassNMSTest
+[Trait("Category", "WindowsOnly")]
+public class RemoveMultiClassNMSTest(ITestOutputHelper console)
 {
-    private readonly ITestOutputHelper _console;
-
-    public RemoveMultiClassNMSTest(ITestOutputHelper console)
-    {
-        _console = console;
-    }
-
     [Fact]
     public async Task NormalOCRDetectionModel_Should_CanExport()
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            console.WriteLine("Skipping test on non-Windows platform.");
+            return;
+        }
+
         // Arrange
         await LocalDictOnlineRecognizationModel.ChineseV3.DownloadAsync();
         string dir = Path.Combine(Settings.GlobalModelDirectory, LocalDictOnlineRecognizationModel.ChineseV3.Name);
@@ -28,7 +28,7 @@ public class RemoveMultiClassNMSTest
 
         // Assert
         Assert.NotEmpty(newOnnxModel);
-        _console.WriteLine($"onnxModel: {onnxModel.Length} bytes");
-        _console.WriteLine($"newOnnxModel: {newOnnxModel.Length} bytes");
+        console.WriteLine($"onnxModel: {onnxModel.Length} bytes");
+        console.WriteLine($"newOnnxModel: {newOnnxModel.Length} bytes");
     }
 }

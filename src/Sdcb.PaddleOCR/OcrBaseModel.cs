@@ -1,6 +1,7 @@
 ﻿using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR.Models;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Sdcb.PaddleOCR;
 
@@ -32,7 +33,7 @@ public abstract class OcrBaseModel
     /// <summary>
     /// Gets the default device for the model.
     /// </summary>
-    public abstract Action<PaddleConfig> DefaultDevice { get; }
+    public virtual Action<PaddleConfig> DefaultDevice => PaddleDevice.PlatformDefault;
 
     /// <summary>
     /// Configure the device related config of the <see cref="PaddleConfig"/>.

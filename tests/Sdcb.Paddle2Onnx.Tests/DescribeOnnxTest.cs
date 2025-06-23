@@ -1,21 +1,21 @@
 ﻿using Sdcb.PaddleOCR.Models.Online;
+using System.Runtime.InteropServices;
 using Xunit.Abstractions;
 
 namespace Sdcb.Paddle2Onnx.Tests;
 
-[Trait("Category", "LinuxExclude")]
-public class DescribeOnnxTest
+[Trait("Category", "WindowsOnly")]
+public class DescribeOnnxTest(ITestOutputHelper console)
 {
-    private readonly ITestOutputHelper _console;
-
-    public DescribeOnnxTest(ITestOutputHelper console)
-    {
-        _console = console;
-    }
-
     [Fact]
     public async Task OnnxModel_CanBe_Described()
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            console.WriteLine("Skipping test on non-Windows platform.");
+            return;
+        }
+
         // Arrange
         await LocalDictOnlineRecognizationModel.ChineseV3.DownloadAsync();
         string dir = Path.Combine(Settings.GlobalModelDirectory, LocalDictOnlineRecognizationModel.ChineseV3.Name);

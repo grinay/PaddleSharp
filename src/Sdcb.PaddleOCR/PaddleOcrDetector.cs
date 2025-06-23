@@ -17,7 +17,7 @@ public class PaddleOcrDetector : IDisposable
     readonly PaddlePredictor _p;
 
     /// <summary>Gets or sets the maximum size for resizing the input image.</summary>
-    public int? MaxSize { get; set; } = 1536;
+    public int? MaxSize { get; set; } = 960;
 
     /// <summary>Gets or sets the score threshold for filtering out possible text boxes.</summary>
     public float? BoxScoreThreahold { get; set; } = 0.7f;

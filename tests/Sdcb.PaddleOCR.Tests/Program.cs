@@ -2,6 +2,8 @@
 using Sdcb.PaddleOCR.Models;
 using Sdcb.PaddleOCR.Models.Online;
 
+//[assembly: Xunit.CollectionBehavior(DisableTestParallelization = true)]
+
 namespace Sdcb.PaddleOCR.Tests;
 
 internal class Program

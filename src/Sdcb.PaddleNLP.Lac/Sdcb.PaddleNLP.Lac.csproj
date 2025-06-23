@@ -30,19 +30,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PolySharp" Version="1.14.1">
+    <PackageReference Include="PolySharp" Version="1.15.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
     <ProjectReference Include="..\Sdcb.PaddleNLP.Lac.Model\Sdcb.PaddleNLP.Lac.Model.csproj" />
     <ProjectReference Include="..\Sdcb.PaddleInference\Sdcb.PaddleInference.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' != 'Debug'">
-    <PackageReference Include="Sdcb.PaddleInference" Version="2.5.0.1" />
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Sdcb.PaddleInference" Version="3.0.1" />
     <PackageReference Include="Sdcb.PaddleNLP.Lac.Model" Version="1.0.0" />
   </ItemGroup>
 

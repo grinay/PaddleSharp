@@ -21,62 +21,56 @@
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
 | Sdcb.PaddleInference | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.svg)](https://nuget.org/packages/Sdcb.PaddleInference) | Paddle Inference C API .NET 绑定 ⚙️ |
 
-### 本地动态库包 🏗️
+### 原生包 🏗️
 
-| 包名称                                            | 版本 📌                                                                                                                                                                         | 描述                  |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
-| Sdcb.PaddleInference.runtime.win64.mkl            | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.mkl.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.mkl)                       | win64+mkldnn          |
-| Sdcb.PaddleInference.runtime.win64.openblas       | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.openblas.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.openblas)             | win64+openblas        |
-| Sdcb.PaddleInference.runtime.win64.openblas-noavx | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.openblas-noavx.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.openblas-noavx) | 不含AVX，适用于老CPU  |
-| Sdcb.PaddleInference.runtime.win64.cu120-sm86-89  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu120-sm86-89.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu120-sm86-89)   | 适用于英伟达30/40系列 |
-| Sdcb.PaddleInference.runtime.win64.cu120-sm80  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu120-sm80.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu120-sm80)   | 适用于NVIDIA A100/A10 |
-| Sdcb.PaddleInference.runtime.win64.cu120-sm61-75  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu120-sm61-75.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu120-sm61-75)   | 适用于英伟达10/20系列 |
+| 包名                                                     | 版本 📌                                                                                                                                                                    | 描述                                  |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| Sdcb.PaddleInference.runtime.win64.mkl                  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.mkl.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.mkl)                   | 推荐给大多数用户（CPU、MKL）            |
+| Sdcb.PaddleInference.runtime.win64.openblas             | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.openblas.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.openblas)         | CPU，OpenBLAS                       |
+| Sdcb.PaddleInference.runtime.win64.openblas-noavx       | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.openblas-noavx.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.openblas-noavx) | CPU，无AVX，适用于老款CPU               |
+| Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm61   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm61.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm61) | CUDA 11.8，GTX 10系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm75   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm75.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm75) | CUDA 11.8，RTX 20/GTX 16xx系列         |
+| Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm86   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm86.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm86) | CUDA 11.8，RTX 30系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm89   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm89.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu118_cudnn89_sm89) | CUDA 11.8，RTX 40系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm61   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm61.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm61) | CUDA 12.6，GTX 10系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm75   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm75.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm75) | CUDA 12.6，RTX 20/GTX 16xx系列         |
+| Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm86   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm86.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm86) | CUDA 12.6，RTX 30系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm89   | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm89.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu126_cudnn95_sm89) | CUDA 12.6，RTX 40系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm61  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm61.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm61) | CUDA 12.9，GTX 10系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm75  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm75.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm75) | CUDA 12.9，RTX 20/GTX 16xx系列         |
+| Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm86  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm86.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm86) | CUDA 12.9，RTX 30系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm89  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm89.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm89) | CUDA 12.9，RTX 40系列                 |
+| Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm120 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm120.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cu129_cudnn910_sm120) | CUDA 12.9，RTX 50系列（仅对应 CUDA 12.9）|
+| Sdcb.PaddleInference.runtime.linux-x64.openblas         | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.linux-x64.openblas.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.linux-x64.openblas)   | Linux x64，OpenBLAS                  |
+| Sdcb.PaddleInference.runtime.linux-x64.mkl              | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.linux-x64.mkl.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.linux-x64.mkl)             | Linux x64，MKL                       |
+| Sdcb.PaddleInference.runtime.linux-x64                  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.linux-x64.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.linux-x64)                     | Linux x64，MKL+OpenVINO               |
+| Sdcb.PaddleInference.runtime.linux-arm64                | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.linux-arm64.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.linux-arm64)                 | Linux ARM64                          |
+| Sdcb.PaddleInference.runtime.osx-x64                    | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.osx-x64.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.osx-x64)                         | macOS x64，内含ONNXRuntime            |
+| Sdcb.PaddleInference.runtime.osx-arm64                  | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.osx-arm64.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.osx-arm64)                     | macOS ARM64                          |
 
-注意：`cu120`指CUDA 12.0，它编译于CUDA 12.0.1/cuDNN 8.9.7.29/Tensor RT 8.6.1.6的环境。
+**包选择指南：**
 
-Linux操作系统NuGet包(预览):
+- 推荐大多数用户使用`Sdcb.PaddleInference.runtime.win64.mkl`。该包在性能和体积之间实现了最佳平衡。需要注意该包不支持GPU加速，适合普遍场景。
+- `openblas-noavx`适合不支持AVX2指令集的老CPU。
+- 其余包为不同CUDA组合（GPU加速），支持以下三种CUDA版本：
+  - **CUDA 11.8：** 支持10–40系列NVIDIA显卡
+  - **CUDA 12.6：** 支持10–40系列NVIDIA显卡
+  - **CUDA 12.9：** 支持10–50系列NVIDIA显卡
 
-| Package                                        | Version 📌                                                                                                                                                                | Description                               |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
-| Sdcb.PaddleInference.runtime.linux-loongarch64 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.linux-loongarch64.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.linux-loongarch64) | Loongnix GCC 8.2(龙芯3A5000以上)          |
-| Sdcb.PaddleInference.runtime.linux64.mkl.gcc82 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.linux64.mkl.gcc82.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.linux64.mkl.gcc82) | Linux-x64 GCC 8.2(tested in Ubuntu 22.04) |
+**重要说明：**  
+并非所有GPU包都适用于每一款显卡。请参考以下GPU与`sm`后缀的对应关系：
 
-注意，因为Linux操作系统无法在运行时修改`LD_LIBRARY_PATH`的值，如果按先加载被依赖动态库（如libcommon.so）再加载主要动态库（如libpaddle_inference_c.so）的话，而且也由于会报protobuf错误：https://github.com/PaddlePaddle/Paddle/issues/62670
+| `sm` 后缀 | 支持显卡系列                              |
+|-----------|---------------------------------------|
+| sm61      | GTX 10系列                             |
+| sm75      | RTX 20系列（及GTX 16xx系列如GTX 1660）         |
+| sm86      | RTX 30系列                             |
+| sm89      | RTX 40系列                             |
+| sm120     | RTX 50系列（仅CUDA 12.9支持）             |
 
-所以所有Linux操作系统的NuGet包都是处于preview的状态，我无法解决这个问题，目前如果您使用Linux的NuGet包的话，程序运行前需要手动使用下列命令指定LD_LIBRARY_PATH环境变量：
+其他以 `Sdcb.PaddleInference.runtime` 开头的包可能已弃用。
 
-* 在x64 CPU中：
-```
-export LD_LIBRARY_PATH=/<程序目录>/bin/Debug/net8.0/runtimes/linux-x64/native:$LD_LIBRARY_PATH
-```
-
-* 龙芯5000或以上的CPU（linux-loongarch64）：
-```
-export LD_LIBRARY_PATH=/<程序目录>/bin/Debug/net8.0/runtimes/linux-loongarch64/native:$LD_LIBRARY_PATH
-```
-
-
-一些旧的包已经被废弃了(版本 <= 2.5.0):
-| 包名称                                                          | 版本 📌                                                                                                                                                                                                     | 描述                                             |
-| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_tr72_sm61_75 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_tr72_sm61_75.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_tr72_sm61_75) | win64/CUDA 10.2/cuDNN 7.6/TensorRT 7.2/sm61+sm75 |
-| Sdcb.PaddleInference.runtime.win64.cuda118_cudnn86_tr85_sm86_89 | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cuda118_cudnn86_tr85_sm86_89.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cuda118_cudnn86_tr85_sm86_89) | win64/CUDA 11.8/cuDNN 8.6/TensorRT 8.5/sm86+sm89 |
-| Sdcb.PaddleInference.runtime.win64.cuda117_cudnn84_tr84_sm86    | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cuda117_cudnn84_tr84_sm86.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cuda117_cudnn84_tr84_sm86)       | win64/CUDA 11.7/cuDNN 8.4/TensorRT 8.4/sm86      |
-| Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75      | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75)           | win64/CUDA 10.2/cuDNN 7.6/sm61+sm75              |
-| Sdcb.PaddleInference.runtime.win64.cuda116_cudnn84_sm86_onnx    | [![NuGet](https://img.shields.io/nuget/v/Sdcb.PaddleInference.runtime.win64.cuda116_cudnn84_sm86_onnx.svg)](https://nuget.org/packages/Sdcb.PaddleInference.runtime.win64.cuda116_cudnn84_sm86_onnx)       | win64/CUDA 11.6/cuDNN 8.4/sm86/onnx              |
-
-以 `Sdcb.PaddleInference.runtime` 开头的其他包也可能已经被废弃。
-
-百度的包可以从这里下载：https://www.paddlepaddle.org.cn/inference/master/guides/install/download_lib.html#windows
-
-我的 Sdcb 包是自编译的。
-
-百度官方的 GPU 包过大(>1.5GB)，无法发布到 nuget.org，上传到 Github 时大小限制为 250MB，相关问题如下：
-
-* https://github.com/PaddlePaddle/Paddle/issues/43874 ❌
-* https://github.com/NuGet/Home/issues/11706#issuecomment-1167305006 ❌
-
-但是，你可以使用 `01-build-native.linq` 🛠️构建你自己的 GPU nuget 包。
+所有这些包都是由我手动编译的，并且使用了此处的一些代码补丁：https://github.com/sdcb/PaddleSharp/blob/master/build/capi.patch
 
 ## Paddle 设备
 
@@ -97,12 +91,6 @@ export LD_LIBRARY_PATH=/<程序目录>/bin/Debug/net8.0/runtimes/linux-loongarch
   更快，但依赖 NVIDIA GPU 和 CUDA
 
   如果你想使用 GPU，你应该参考 FAQ 中的 `如何启用 GPU?` 部分，CUDA/cuDNN/TensorRT 需要手动安装。
-
-* TensorRT - `PaddleDevice.Gpu().And(PaddleDevice.TensorRt("shape-info.txt"))`
-
-  比原生 Gpu 还要快，但需要安装 TensorRT 环境。
-
-  请参考 [tensorrt](#tensorrt) 部分了解更多细节
 
 ## 常见问题 ❓
 ### 为什么我的代码在我自己的 windows 机器上运行良好，但在其他机器上出现 DllNotFoundException: 💻
