@@ -21,7 +21,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
                 // E0623 03:57:55.708065 159170560 onnxruntime_predictor.cc:354] Got invalid dimensions for input: x for the following indices
                 // index: 2 Got: 320 Expected: 960
                 // Please fix either the inputs or the model.
-                console.WriteLine("Skipping EnglishV3 test on macOS x64 due to known issues with ONNX model.");
+                Console.WriteLine("Skipping EnglishV3 test on macOS x64 due to known issues with ONNX model.");
                 return;
             }
             else if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
@@ -34,7 +34,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
                 //   [Hint: Expected iter != allocators.end(), but received iter == allocators.end().] (at /Users/runner/work/PaddleSharp/PaddleSharp/paddle-src/paddle/phi/core/memory/allocation/allocator_facade.cc:381)
                 //   [operator < matmul > error]
                 // The active test run was aborted. Reason: Test host process crashed
-                console.WriteLine("Skipping EnglishV3 test on macOS arm64 because this issue: https://github.com/PaddlePaddle/Paddle/issues/72413");
+                Console.WriteLine("Skipping EnglishV3 test on macOS arm64 because this issue: https://github.com/PaddlePaddle/Paddle/issues/72413");
                 return;
             }
         }
@@ -46,7 +46,13 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public void FastCheckOCREnglishV4()
     {
-        Console.WriteLine($"Running EnglishV4 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        // skip for osx-arm64
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.Arm64)
+        {
+            Console.WriteLine("Skipping EnglishV4 test on macOS arm64 due to known issues: https://github.com/PaddlePaddle/Paddle/issues/72413");
+            return;
+        }
+
         FullOcrModel model = LocalFullModels.EnglishV4;
         FastCheck(model);
     }
@@ -54,6 +60,13 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public void FastCheckOCRChineseV4()
     {
+        // skip for osx-arm64
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.Arm64)
+        {
+            Console.WriteLine("Skipping EnglishV4 test on macOS arm64 due to known issues: https://github.com/PaddlePaddle/Paddle/issues/72413");
+            return;
+        }
+
         Console.WriteLine($"Running ChineseV4 test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         FullOcrModel model = LocalFullModels.ChineseV4;
         FastCheck(model);
@@ -84,6 +97,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
             {
                 PaddleOcrResult result = all.Run(src);
                 console.WriteLine("Detected all texts: \n" + result.Text);
+                Console.WriteLine("Detected all texts: \n" + result.Text);
                 foreach (PaddleOcrResultRegion region in result.Regions)
                 {
                     console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
@@ -114,6 +128,7 @@ public class OfflineModelsTest(ITestOutputHelper console)
             {
                 PaddleOcrResult result = await all.Run(src);
                 console.WriteLine("Detected all texts: \n" + result.Text);
+                Console.WriteLine("Detected all texts: \n" + result.Text);
                 foreach (PaddleOcrResultRegion region in result.Regions)
                 {
                     console.WriteLine($"Text: {region.Text}, Score: {region.Score}, RectCenter: {region.Rect.Center}, RectSize:    {region.Rect.Size}, Angle: {region.Rect.Angle}");
