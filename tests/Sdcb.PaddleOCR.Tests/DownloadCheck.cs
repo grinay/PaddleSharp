@@ -4,17 +4,10 @@ using Xunit.Abstractions;
 
 namespace Sdcb.PaddleOCR.Tests;
 
-public class DownloadCheckTest
+#pragma warning disable CS9113 // å‚æ•°æœªè¯»ã€‚
+public class DownloadCheckTest(ITestOutputHelper console)
+#pragma warning restore CS9113 // å‚æ•°æœªè¯»ã€‚
 {
-#pragma warning disable IDE0052 // É¾³ıÎ´¶ÁµÄË½ÓĞ³ÉÔ±
-    private readonly ITestOutputHelper _console;
-#pragma warning restore IDE0052 // É¾³ıÎ´¶ÁµÄË½ÓĞ³ÉÔ±
-
-    public DownloadCheckTest(ITestOutputHelper console)
-    {
-        _console = console;
-    }
-
     [Fact]
     public async Task DownloadCheck()
     {
