@@ -1,6 +1,8 @@
 ﻿using OpenCvSharp;
 using Sdcb.PaddleOCR.Models;
 using Sdcb.PaddleOCR.Models.Online;
+using Xunit;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace Sdcb.PaddleOCR.Tests;
 
