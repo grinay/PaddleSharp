@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    <ProjectReference Include="..\Sdcb.PaddleOCR\Sdcb.PaddleOCR.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
@@ -41,7 +42,7 @@
     <ProjectReference Include="..\Sdcb.PaddleOCR.Models.LocalV5\Sdcb.PaddleOCR.Models.LocalV5.csproj" />
     
     <ProjectReference Include="..\Sdcb.PaddleOCR.Models.Shared\Sdcb.PaddleOCR.Models.Shared.csproj" />
-    <ProjectReference Include="..\Sdcb.PaddleOCR\Sdcb.PaddleOCR.csproj" />
+    <!--<ProjectReference Include="..\Sdcb.PaddleOCR\Sdcb.PaddleOCR.csproj" />-->
     
   </ItemGroup>
 
@@ -51,7 +52,7 @@
     <PackageReference Include="Sdcb.PaddleOCR.Models.LocalV5" Version="3.0.0" />
 
     <PackageReference Include="Sdcb.PaddleOCR.Models.Shared" Version="2.7.0.1" />
-    <PackageReference Include="Sdcb.PaddleOCR" Version="3.0.0" />
+    <!--<PackageReference Include="Sdcb.PaddleOCR" Version="3.0.0" />-->
   </ItemGroup>
 
 </Project>
