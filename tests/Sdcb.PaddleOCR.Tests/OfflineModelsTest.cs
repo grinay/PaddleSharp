@@ -12,14 +12,30 @@ public class OfflineModelsTest(ITestOutputHelper console)
     [Fact]
     public void FastCheckOCREnglishV3()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.X64)
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            // macOS is onnx only, bug buggy for in memory EnglishV3, so skip this test
-            // E0623 03:57:55.708065 159170560 onnxruntime_predictor.cc:354] Got invalid dimensions for input: x for the following indices
-            // index: 2 Got: 320 Expected: 960
-            // Please fix either the inputs or the model.
-            console.WriteLine("Skipping EnglishV3 test on macOS x64 due to known issues with ONNX model.");
-            return;
+            if (RuntimeInformation.OSArchitecture == Architecture.X64)
+            {
+                // macOS-x64 have onnx, but not have mkldnn, it's buggy for in memory EnglishV3, so skip this test
+                // E0623 03:57:55.708065 159170560 onnxruntime_predictor.cc:354] Got invalid dimensions for input: x for the following indices
+                // index: 2 Got: 320 Expected: 960
+                // Please fix either the inputs or the model.
+                console.WriteLine("Skipping EnglishV3 test on macOS x64 due to known issues with ONNX model.");
+                return;
+            }
+            else if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
+            {
+                // EnglishV3 is not working in macos-arm64, so we use EnglishV4 instead: https://github.com/PaddlePaddle/Paddle/issues/72413
+                // ----------------------
+                // Error Message Summary:
+                // ----------------------
+                // NotFoundError: No allocator found for the place, Place(undefined:0)
+                //   [Hint: Expected iter != allocators.end(), but received iter == allocators.end().] (at /Users/runner/work/PaddleSharp/PaddleSharp/paddle-src/paddle/phi/core/memory/allocation/allocator_facade.cc:381)
+                //   [operator < matmul > error]
+                // The active test run was aborted. Reason: Test host process crashed
+                console.WriteLine("Skipping EnglishV3 test on macOS arm64 because this issue: https://github.com/PaddlePaddle/Paddle/issues/72413");
+                return;
+            }
         }
 
         FullOcrModel model = LocalFullModels.EnglishV3;
