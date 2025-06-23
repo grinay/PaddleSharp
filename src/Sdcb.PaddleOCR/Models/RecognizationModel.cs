@@ -56,11 +56,7 @@ public abstract class RecognizationModel : OcrBaseModel
     /// <summary>
     /// Gets the default device for the classification model.
     /// </summary>
-    public override Action<PaddleConfig> DefaultDevice => Version switch
-    {
-        ModelVersion.V2 => PaddleDevice.Mkldnn(),
-        _ => PaddleDevice.Onnx(),
-    };
+    public override Action<PaddleConfig> DefaultDevice => PaddleDevice.Mkldnn();
 
     /// <inheritdoc/>
     public override void ConfigureDevice(PaddleConfig config, Action<PaddleConfig>? configure = null)

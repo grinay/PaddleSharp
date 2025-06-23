@@ -55,9 +55,9 @@ public class PaddleOcrAll : IDisposable
     /// Initializes a new instance of the <see cref="PaddleOcrAll"/> class with the specified PaddlePaddle models and device configurations for each model.
     /// </summary>
     /// <param name="model">The full OCR model containing detection, classification, and recognition models.</param>
-    /// <param name="detectorDevice">The device configuration for running the detection model, default: Onnx.</param>
+    /// <param name="detectorDevice">The device configuration for running the detection model, default: Mkldnn.</param>
     /// <param name="classifierDevice">The device configuration for running the classification model, default: Mkldnn.</param>
-    /// <param name="recognizerDevice">The device configuration for running the recognition model, default: Onnx.</param>
+    /// <param name="recognizerDevice">The device configuration for running the recognition model, default: Mkldnn.</param>
     public PaddleOcrAll(FullOcrModel model,
         Action<PaddleConfig>? detectorDevice = null,
         Action<PaddleConfig>? classifierDevice = null,

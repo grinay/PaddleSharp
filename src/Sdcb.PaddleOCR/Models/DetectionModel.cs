@@ -20,11 +20,7 @@ public abstract class DetectionModel : OcrBaseModel
     }
 
     /// <inheritdoc/>
-    public override Action<PaddleConfig> DefaultDevice => Version switch
-    {
-        ModelVersion.V4 => PaddleDevice.Onnx(),
-        _ => PaddleDevice.Mkldnn(),
-    };
+    public override Action<PaddleConfig> DefaultDevice => PaddleDevice.Mkldnn();
 
     /// <summary>
     /// Returns an instance of the DetectionModel class from the directory path.
