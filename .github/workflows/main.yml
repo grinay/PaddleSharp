@@ -30,5 +30,6 @@ jobs:
       shell: bash
       run: |
         # dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal -p:Optimize=true
-        dotnet test ./tests/Sdcb.PaddleInference.Tests/Sdcb.PaddleInference.Tests.csproj -c Debug --no-build --verbosity normal -p:Optimize=true
+        # dotnet test ./tests/Sdcb.PaddleInference.Tests/Sdcb.PaddleInference.Tests.csproj -c Debug --no-build --verbosity normal -p:Optimize=true
+        dotnet test -c Debug --no-build --verbosity normal -p:Optimize=true
         # dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'FullyQualifiedName~OnlineModelsTest'
