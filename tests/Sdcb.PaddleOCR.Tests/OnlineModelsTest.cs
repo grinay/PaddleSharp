@@ -1,5 +1,4 @@
 using OpenCvSharp;
-using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR.Models;
 using Sdcb.PaddleOCR.Models.Online;
 using System.Diagnostics;
@@ -13,7 +12,15 @@ public class OnlineModelsTest(ITestOutputHelper console)
     [Fact]
     public async Task FastCheckOCR()
     {
-        FullOcrModel model = await OnlineFullModels.EnglishV4.DownloadAsync();
+        // EnglishV3 is not working in macos-arm64, so we use EnglishV4 instead: https://github.com/PaddlePaddle/Paddle/issues/72413
+        // ----------------------
+        // Error Message Summary:
+        // ----------------------
+        // NotFoundError: No allocator found for the place, Place(undefined:0)
+        //   [Hint: Expected iter != allocators.end(), but received iter == allocators.end().] (at /Users/runner/work/PaddleSharp/PaddleSharp/paddle-src/paddle/phi/core/memory/allocation/allocator_facade.cc:381)
+        //   [operator < matmul > error]
+        // The active test run was aborted. Reason: Test host process crashed
+        FullOcrModel model = await OnlineFullModels.ChineseV4.DownloadAsync();
 
         // from: https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Home-page-extension-visual-updated.png
         byte[] sampleImageData = File.ReadAllBytes(@"./samples/vsext.png");
@@ -70,35 +77,4 @@ public class OnlineModelsTest(ITestOutputHelper console)
             Assert.True(result.Score > 0.9);
         }
     }
-
-    //[Fact]
-    //public async Task V4FastCheckOCR()
-    //{
-    //    OnlineFullModels onlineModels = new OnlineFullModels(
-    //        OnlineDetectionModel.ChineseV4, OnlineClassificationModel.ChineseMobileV2, LocalDictOnlineRecognizationModel.EnglishV4);
-    //    FullOcrModel model = await onlineModels.DownloadAsync();
-
-    //    // from: https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Home-page-extension-visual-updated.png
-    //    byte[] sampleImageData = File.ReadAllBytes(@"./samples/vsext.png");
-
-    //    using (PaddleOcrAll all = new(model)
-    //    {
-    //        AllowRotateDetection = true,
-    //        Enable180Classification = false,
-    //    })
-    //    {
-    //        // Load local file by following code:
-    //        // using (Mat src2 = Cv2.ImRead(@"C:\test.jpg"))
-    //        using (Mat src = Cv2.ImDecode(sampleImageData, ImreadModes.Color))
-    //        {
-    //            PaddleOcrResult result = null!;
-    //            Stopwatch sw = Stopwatch.StartNew();
-    //            result = all.Run(src);
-    //            sw.Stop();
-
-    //            _console.WriteLine($"elapsed={sw.ElapsedMilliseconds}ms");
-    //            _console.WriteLine("Detected all texts: \n" + result.Text);
-    //        }
-    //    }
-    //}
 }
