@@ -146,7 +146,7 @@ public class PaddleOcrAll : IDisposable
         try
         {
             return new PaddleOcrResult(Recognizer.Run(mats, recognizeBatchSize)
-                .Select((result, i) => new PaddleOcrResultRegion(rects[i], result.Text, result.Score))
+                .Select((result, i) => new PaddleOcrResultRegion(rects[i], result.Text, result.Score, result.SingleChars))
                 .ToArray());
         }
         finally
