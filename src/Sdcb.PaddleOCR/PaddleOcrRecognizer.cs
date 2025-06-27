@@ -175,7 +175,8 @@ public class PaddleOcrRecognizer : IDisposable
                             StringBuilder sb = new();
                             int lastIndex = 0;
                             float score = 0;
-                            var singleChars = new List<OcrRecognizerResultSingleChar>();
+                            List<OcrRecognizerResultSingleChar> singleChars = new();
+                            int charIndex = 0;
                             for (int n = 0; n < charCount; ++n)
                             {
                                 using Mat mat = Mat.FromPixelData(1, labelCount, MatType.CV_32FC1, dataPtr + (n + i * charCount) * labelCount * sizeof(float));
@@ -185,13 +186,15 @@ public class PaddleOcrRecognizer : IDisposable
                                 if (maxIdx[1] > 0 && (!(n > 0 && maxIdx[1] == lastIndex)))
                                 {
                                     score += (float)maxVal;
-                                    sb.Append(Model.GetLabelByIndex(maxIdx[1]));
+                                    string character = Model.GetLabelByIndex(maxIdx[1]);
+                                    sb.Append(character);
                                     
-                                    singleChars.Add(new OcrRecognizerResultSingleChar
-                                    {
-                                        Character= Model.GetLabelByIndex(maxIdx[1]),
-                                        Score = (float)maxVal
-                                    });
+                                    singleChars.Add(new OcrRecognizerResultSingleChar(
+                                        character,
+                                        (float)maxVal,
+                                        charIndex
+                                    ));
+                                    charIndex++;
                                 }
                                 lastIndex = maxIdx[1];
                             }

@@ -16,11 +16,20 @@ public record struct OcrRecognizerResultSingleChar
     public float Score { get; init; }
 
     /// <summary>
+    /// The index position of this character within the recognized text.
+    /// </summary>
+    public int Index { get; init; }
+
+    /// <summary>
     ///  Initializes a new instance of the <see cref="OcrRecognizerResultSingleChar"/> record.
     /// </summary>
-    public OcrRecognizerResultSingleChar(string character, float score)
+    /// <param name="character">The recognized character.</param>
+    /// <param name="score">The confidence score of the character recognition.</param>
+    /// <param name="index">The index position of this character within the recognized text.</param>
+    public OcrRecognizerResultSingleChar(string character, float score, int index)
     {
         Character = character;
         Score = score;
+        Index = index;
     }
 }
