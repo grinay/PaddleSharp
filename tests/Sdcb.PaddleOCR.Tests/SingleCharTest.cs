@@ -15,14 +15,6 @@ public class SingleCharTest(ITestOutputHelper testOutputHelper)
         testOutputHelper.WriteLine(
             $"Running SingleChar test on {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
 
-        // Skip for known problematic platforms
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.Arm64)
-        {
-            testOutputHelper.WriteLine(
-                "Skipping SingleChar test on macOS arm64 due to known issues: https://github.com/PaddlePaddle/Paddle/issues/72413");
-            return;
-        }
-
         FullOcrModel model = LocalFullModels.ChineseV5;
         byte[] sampleImageData = File.ReadAllBytes(@"./samples/vsext.png");
 
