@@ -1,4 +1,6 @@
-﻿namespace Sdcb.PaddleOCR;
+﻿using System.Collections.Generic;
+
+namespace Sdcb.PaddleOCR;
 
 /// <summary>
 /// A struct representing the result of an image recognition operation using Paddle OCR.
@@ -14,15 +16,22 @@ public readonly record struct PaddleOcrRecognizerResult
     /// The confidence score of the text recognition.
     /// </summary>
     public float Score { get; init; }
+    
+    /// <summary>
+    /// A read-only list of single character recognition results.
+    /// </summary>
+    public IReadOnlyList<OcrRecognizerResultSingleChar> SingleChars { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PaddleOcrRecognizerResult"/> struct.
     /// </summary>
     /// <param name="text">The recognized text from the image.</param>
     /// <param name="score">The confidence score of the text recognition.</param>
-    public PaddleOcrRecognizerResult(string text, float score)
+    /// <param name="singleChars">A list of single character recognition results.</param>
+    public PaddleOcrRecognizerResult(string text, float score, IReadOnlyList<OcrRecognizerResultSingleChar> singleChars)
     {
         Text = text;
         Score = score;
+        SingleChars = singleChars ?? new List<OcrRecognizerResultSingleChar>();
     }
 }
