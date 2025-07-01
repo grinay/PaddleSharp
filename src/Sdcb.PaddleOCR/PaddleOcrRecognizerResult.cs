@@ -20,7 +20,7 @@ public readonly record struct PaddleOcrRecognizerResult
     /// <summary>
     /// A read-only list of single character recognition results.
     /// </summary>
-    public IReadOnlyList<OcrRecognizerResultSingleChar> OcrRecognizerResultSingleChars { get; init; }
+    public IReadOnlyList<RecognizedChar> Chars { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PaddleOcrRecognizerResult"/> struct.
@@ -28,10 +28,10 @@ public readonly record struct PaddleOcrRecognizerResult
     /// <param name="text">The recognized text from the image.</param>
     /// <param name="score">The confidence score of the text recognition.</param>
     /// <param name="ocrRecognizerResultSingleChar">A list of single character recognition results.</param>
-    public PaddleOcrRecognizerResult(string text, float score, IReadOnlyList<OcrRecognizerResultSingleChar> ocrRecognizerResultSingleChar)
+    public PaddleOcrRecognizerResult(string text, float score, IReadOnlyList<RecognizedChar> ocrRecognizerResultSingleChar)
     {
         Text = text;
         Score = score;
-        OcrRecognizerResultSingleChars = ocrRecognizerResultSingleChar ?? new List<OcrRecognizerResultSingleChar>();
+        Chars = ocrRecognizerResultSingleChar ?? new List<RecognizedChar>();
     }
 }

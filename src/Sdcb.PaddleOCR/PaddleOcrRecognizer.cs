@@ -175,7 +175,7 @@ public class PaddleOcrRecognizer : IDisposable
                             StringBuilder sb = new();
                             int lastIndex = 0;
                             float score = 0;
-                            List<OcrRecognizerResultSingleChar> ocrRecognizerResultSingleChars = new();
+                            List<RecognizedChar> ocrRecognizerResultSingleChars = new();
                             int charIndex = 0;
                             for (int n = 0; n < charCount; ++n)
                             {
@@ -189,7 +189,7 @@ public class PaddleOcrRecognizer : IDisposable
                                     string character = Model.GetLabelByIndex(maxIdx[1]);
                                     sb.Append(character);
                                     
-                                    ocrRecognizerResultSingleChars.Add(new OcrRecognizerResultSingleChar(
+                                    ocrRecognizerResultSingleChars.Add(new RecognizedChar(
                                         character,
                                         (float)maxVal,
                                         charIndex

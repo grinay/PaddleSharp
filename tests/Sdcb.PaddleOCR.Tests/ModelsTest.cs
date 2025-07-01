@@ -232,15 +232,12 @@ public class ModelsTest(ITestOutputHelper console)
         foreach (PaddleOcrResultRegion region in result.Regions)
         {
             console.WriteLine($"Text: {region.Text}, Score: {region.Score}");
-            console.WriteLine($"OcrRecognizerResultSingleChars count: {region.OcrRecognizerResultSingleChars.Count}");
-
-            // Verify single characters exist
-            Assert.NotEmpty(region.OcrRecognizerResultSingleChars);
+            console.WriteLine($"Chars count: {region.Chars.Count}");
 
             // Verify indices are properly set and sequential
-            for (int i = 0; i < region.OcrRecognizerResultSingleChars.Count; i++)
+            for (int i = 0; i < region.Chars.Count; i++)
             {
-                OcrRecognizerResultSingleChar singleChar = region.OcrRecognizerResultSingleChars[i];
+                RecognizedChar singleChar = region.Chars[i];
                 Assert.Equal(i, singleChar.Index);
                 Assert.NotNull(singleChar.Character);
                 Assert.True(singleChar.Score > 0, $"Character '{singleChar.Character}' should have a positive score");
@@ -250,7 +247,7 @@ public class ModelsTest(ITestOutputHelper console)
             }
 
             // Verify the concatenated single characters match the full text
-            string reconstructedText = string.Join("", region.OcrRecognizerResultSingleChars.Select(c => c.Character));
+            string reconstructedText = string.Join("", region.Chars.Select(c => c.Character));
             Assert.Equal(region.Text, reconstructedText);
         }
     }
