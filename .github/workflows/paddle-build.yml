@@ -2,15 +2,15 @@
 on:
   push:
     branches:
-      - feature/linux
+      - feature/3.1
       - master
     paths:
       - .github/workflows/paddle-build.yml
   workflow_dispatch:
 
 env:
-  PADDLE_VERSION: "3.0.0"
-  PADDLE_BRANCH: "v3.0.0"
+  PADDLE_VERSION: "3.1.0"
+  PADDLE_BRANCH: "v3.1.0"
 
 jobs:
   build-all:
