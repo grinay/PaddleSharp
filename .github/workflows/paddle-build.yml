@@ -112,7 +112,7 @@ jobs:
       shell: pwsh
       run: |
         cd ./paddle-src
-        Invoke-WebRequest -Uri https://raw.githubusercontent.com/sdcb/PaddleSharp/refs/heads/feature/linux/build/capi.patch -OutFile capi.patch
+        Invoke-WebRequest -Uri https://raw.githubusercontent.com/sdcb/PaddleSharp/refs/heads/feature/3.1/build/capi.patch -OutFile capi.patch
         git apply --ignore-whitespace capi.patch
         rm capi.patch
 
