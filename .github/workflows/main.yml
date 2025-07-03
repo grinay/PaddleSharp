@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-      - feature/linux
+      - feature/3.1
     paths:
       - src/**
       - tests/**
