@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - .github/workflows/paddle-build.yml
+      - build/capi.patch
   workflow_dispatch:
 
 env:

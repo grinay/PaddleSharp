@@ -1,8 +1,8 @@
 diff --git a/cmake/flags.cmake b/cmake/flags.cmake
-index 942d40dfe7..f56d420f6e 100644
+index e49922c355..74857fa8f4 100644
 --- a/cmake/flags.cmake
 +++ b/cmake/flags.cmake
-@@ -245,7 +245,6 @@ if(APPLE)
+@@ -244,7 +244,6 @@ if(APPLE)
    set(COMMON_FLAGS
        -Wno-deprecated-register
        -Werror=format
@@ -11,10 +11,10 @@ index 942d40dfe7..f56d420f6e 100644
        -Werror=uninitialized
        -Werror=tautological-constant-out-of-range-compare
 diff --git a/paddle/fluid/inference/api/analysis_predictor.cc b/paddle/fluid/inference/api/analysis_predictor.cc
-index c9d5b7cfc6..dbac930966 100644
+index 51ecf263ca..456f90c202 100644
 --- a/paddle/fluid/inference/api/analysis_predictor.cc
 +++ b/paddle/fluid/inference/api/analysis_predictor.cc
-@@ -447,7 +447,9 @@ bool AnalysisPredictor::Init(
+@@ -464,7 +464,9 @@ bool AnalysisPredictor::Init(
    paddle::platform::SetNumThreads(config_.cpu_math_library_num_threads());
  
    std::string model_path = config_.prog_file();
@@ -25,7 +25,7 @@ index c9d5b7cfc6..dbac930966 100644
      load_pir_model_ =
          model_path.substr(model_path.find_last_of(".") + 1) == "json";
    } else if (!config_.model_dir().empty()) {
-@@ -523,7 +525,7 @@ bool AnalysisPredictor::Init(
+@@ -540,7 +542,7 @@ bool AnalysisPredictor::Init(
    if (!PrepareExecutor()) {
      return true;
    }
@@ -34,6 +34,15 @@ index c9d5b7cfc6..dbac930966 100644
  #if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP)
    // TODO(inference): Now only gpu with external stream support private
    // device_context.
+@@ -1376,7 +1378,7 @@ bool AnalysisPredictor::SaveOrLoadPirParameters(bool for_save) {
+       }
+ 
+     } else {
+-      if (std::filesystem::exists(config_.params_file())) {
++      if (config_.model_from_memory_ || std::filesystem::exists(config_.params_file())) {
+         pir::LoadCombineFunction(config_.params_file(),
+                                  filter_param_names,
+                                  &tensor_out,
 diff --git a/paddle/fluid/inference/capi_exp/pd_config.cc b/paddle/fluid/inference/capi_exp/pd_config.cc
 index 9238599111..8e38198227 100644
 --- a/paddle/fluid/inference/capi_exp/pd_config.cc
@@ -116,10 +125,10 @@ index b611328030..3dfe02b258 100644
  }  // extern "C"
  #endif
 diff --git a/paddle/fluid/pir/serialize_deserialize/src/interface.cc b/paddle/fluid/pir/serialize_deserialize/src/interface.cc
-index adb60536a7..e6b9016011 100644
+index bc597db6d1..6c45afcd46 100644
 --- a/paddle/fluid/pir/serialize_deserialize/src/interface.cc
 +++ b/paddle/fluid/pir/serialize_deserialize/src/interface.cc
-@@ -69,8 +69,14 @@ void WriteModule(const pir::Program& program,
+@@ -74,8 +74,14 @@ void WriteModule(const pir::Program& program,
  bool ReadModule(const std::string& file_path,
                  pir::Program* program,
                  int64_t pir_version) {
