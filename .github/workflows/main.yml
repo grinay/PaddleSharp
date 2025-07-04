@@ -11,11 +11,8 @@ on:
   workflow_dispatch:
   
 jobs:
-  run:
-    runs-on: ${{ matrix.runs-on }}
-    strategy:
-      matrix:
-        runs-on: [windows-2022, ubuntu-22.04, ubuntu-22.04-arm, macos-13, macos-15]
+  build:
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
     - name: Setup NuGet Source
@@ -26,8 +23,50 @@ jobs:
     - name: Build code
       run: dotnet build -c Debug -p:Optimize=true
 
+    - name: Create as artifacts
+      run: |
+        mkdir -p test-artifacts
+        cp -r tests/Sdcb.PaddleInference.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.PaddleInference.Tests
+        cp -r tests/Sdcb.PaddleNLP.Lac.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.PaddleNLP.Lac.Tests
+        cp -r tests/Sdcb.PaddleOCR.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.PaddleOCR.Tests
+        cp -r tests/Sdcb.RotationDetector.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.RotationDetector.Tests
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-artifacts
+        path: test-artifacts
+
+  run:
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        runs-on: [windows-2022, windows-2025, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm, macos-13, macos-14, macos-15]
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: test-artifacts
+
     - name: Test
       shell: bash
       run: |
-        dotnet test -c Debug --no-build --verbosity normal -p:Optimize=true --filter 'Category!=WindowsOnly'
-        # dotnet test ./tests/Sdcb.PaddleOCR.Tests/Sdcb.PaddleOCR.Tests.csproj -c Debug --no-build --verbosity normal --filter 'FullyQualifiedName~OnlineModelsTest'
+        echo "::group::Run Sdcb.PaddleInference.Tests"
+        cd ~/test-artifacts/Sdcb.PaddleInference.Tests
+        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.PaddleInference.Tests.dll
+        echo "::endgroup::"
+
+        echo "::group::Run Sdcb.PaddleNLP.Lac.Tests"
+        cd ~/test-artifacts/Sdcb.PaddleNLP.Lac.Tests
+        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.PaddleNLP.Lac.Tests.dll
+        echo "::endgroup::"
+
+        echo "::group::Run Sdcb.PaddleOCR.Tests"
+        cd ~/test-artifacts/Sdcb.PaddleOCR.Tests
+        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.PaddleOCR.Tests.dll
+        echo "::endgroup::"
+
+        echo "::group::Run Sdcb.RotationDetector.Tests"
+        cd ~/test-artifacts/Sdcb.RotationDetector.Tests
+        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.RotationDetector.Tests.dll
+        echo "::endgroup::"
