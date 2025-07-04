@@ -1,15 +1,16 @@
 ﻿name: main
 on:
   push:
-    branches:
-      - master
-      - feature/3.1
-    paths:
-      - src/**
-      - tests/**
-      - .github/workflows/main.yml
+    branches: [master, feature/3.1]
+    paths: [src/**, tests/**, .github/workflows/main.yml]
   workflow_dispatch:
-  
+
+env:
+  TEST_PROJECTS: "Sdcb.PaddleInference.Tests \
+                  Sdcb.PaddleNLP.Lac.Tests \
+                  Sdcb.PaddleOCR.Tests \
+                  Sdcb.RotationDetector.Tests"
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -23,13 +24,15 @@ jobs:
     - name: Build code
       run: dotnet build -c Debug -p:Optimize=true
 
-    - name: Create as artifacts
+    - name: Create test artifacts
       run: |
-        mkdir -p test-artifacts
-        rsync -a --mkpath tests/Sdcb.PaddleInference.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.PaddleInference.Tests
-        rsync -a --mkpath tests/Sdcb.PaddleNLP.Lac.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.PaddleNLP.Lac.Tests
-        rsync -a --mkpath tests/Sdcb.PaddleOCR.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.PaddleOCR.Tests
-        rsync -a --mkpath tests/Sdcb.RotationDetector.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.RotationDetector.Tests
+        for proj in $TEST_PROJECTS; do
+          echo "::group::Create artifacts for $proj""
+          dst="test-artifacts/$proj"
+          mkdir -p "$dst"
+          cp -r "tests/$proj/bin/Debug/net8.0/"* "$dst/"
+          echo "::endgroup::"
+        done
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -38,36 +41,26 @@ jobs:
         path: test-artifacts
 
   run:
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        runs-on: [windows-2022, windows-2025, ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm, macos-13, macos-14, macos-15]
+        os: [windows-2022, windows-2025, 
+             ubuntu-22.04, ubuntu-24.04,
+             ubuntu-22.04-arm, ubuntu-24.04-arm,
+             macos-13, macos-14, macos-15]
     needs: build
     steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v4
       with:
         name: test-artifacts
 
     - name: Test
       shell: bash
       run: |
-        echo "::group::Run Sdcb.PaddleInference.Tests"
-        cd ~/test-artifacts/Sdcb.PaddleInference.Tests
-        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.PaddleInference.Tests.dll
-        echo "::endgroup::"
-
-        echo "::group::Run Sdcb.PaddleNLP.Lac.Tests"
-        cd ~/test-artifacts/Sdcb.PaddleNLP.Lac.Tests
-        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.PaddleNLP.Lac.Tests.dll
-        echo "::endgroup::"
-
-        echo "::group::Run Sdcb.PaddleOCR.Tests"
-        cd ~/test-artifacts/Sdcb.PaddleOCR.Tests
-        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.PaddleOCR.Tests.dll
-        echo "::endgroup::"
-
-        echo "::group::Run Sdcb.RotationDetector.Tests"
-        cd ~/test-artifacts/Sdcb.RotationDetector.Tests
-        dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true Sdcb.RotationDetector.Tests.dll
-        echo "::endgroup::"
+        for proj in $TEST_PROJECTS; do
+          echo "::group::Run $proj"
+          dotnet test \
+            "$PWD/test-artifacts/$proj/$proj.dll" \
+            -c Debug --no-build --verbosity detailed -p:Optimize=true
+          echo "::endgroup::"
+        done
