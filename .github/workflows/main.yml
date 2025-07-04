@@ -29,7 +29,7 @@ jobs:
         for proj in ${{ env.TEST_PROJECTS }}; do
           echo "::group::Create artifacts for $proj"
           mkdir -p test-artifacts/$proj
-          cp -r "tests/$proj/bin/Debug/net8.0/"* "test-artifacts/$proj/"
+          mv tests/$proj/bin/Debug/net8.0/* test-artifacts/$proj/
           echo "::endgroup::"
         done
 
@@ -41,6 +41,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-artifacts
+        compression-level: 0
         path: test-artifacts.7z
 
   run:
@@ -66,7 +67,7 @@ jobs:
       run: |
         for proj in ${{ env.TEST_PROJECTS }}; do
           echo "::group::Run $proj"
-          cd "$PWD/test-artifacts/$proj"
+          cd test-artifacts/$proj
           dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true $proj.dll
           echo "::endgroup::"
         done
