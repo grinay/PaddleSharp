@@ -19,7 +19,7 @@ jobs:
     - name: Setup NuGet Source
       run: |
         dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --name github --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
-        dotnet nuget list source
+        dotnet nuget list source 
 
     - name: Build code
       run: dotnet build -c Debug -p:Optimize=true
@@ -34,11 +34,15 @@ jobs:
           echo "::endgroup::"
         done
 
+    - name: Compress test artifacts
+      run: |
+        7z a -t7z -mx=1 -ms=on -mnt=on test-artifacts.7z test-artifacts
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: test-artifacts
-        path: test-artifacts
+        path: test-artifacts.7z
 
   run:
     runs-on: ${{ matrix.os }}
@@ -53,6 +57,10 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: test-artifacts
+
+    - name: Extract test artifacts
+      run: |
+        7z x test-artifacts.7z -otest-artifacts
 
     - name: Test
       shell: bash
