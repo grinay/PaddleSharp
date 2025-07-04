@@ -26,8 +26,8 @@ jobs:
 
     - name: Create test artifacts
       run: |
-        for proj in $TEST_PROJECTS; do
-          echo "::group::Create artifacts for $proj""
+        for proj in ${{ env.TEST_PROJECTS }}; do
+          echo "::group::Create artifacts for $proj"
           dst="test-artifacts/$proj"
           mkdir -p "$dst"
           cp -r "tests/$proj/bin/Debug/net8.0/"* "$dst/"
@@ -57,7 +57,7 @@ jobs:
     - name: Test
       shell: bash
       run: |
-        for proj in $TEST_PROJECTS; do
+        for proj in ${{ env.TEST_PROJECTS }}; do
           echo "::group::Run $proj"
           dotnet test \
             "$PWD/test-artifacts/$proj/$proj.dll" \
