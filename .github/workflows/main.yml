@@ -70,6 +70,6 @@ jobs:
         for proj in ${{ env.TEST_PROJECTS }}; do
           echo "::group::Run $proj"
           cd test-artifacts/$proj
-          dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true $proj.dll
+          dotnet test --verbosity detailed $proj.dll
           echo "::endgroup::"
         done
