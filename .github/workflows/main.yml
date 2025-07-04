@@ -26,10 +26,10 @@ jobs:
     - name: Create as artifacts
       run: |
         mkdir -p test-artifacts
-        cp -r tests/Sdcb.PaddleInference.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.PaddleInference.Tests
-        cp -r tests/Sdcb.PaddleNLP.Lac.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.PaddleNLP.Lac.Tests
-        cp -r tests/Sdcb.PaddleOCR.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.PaddleOCR.Tests
-        cp -r tests/Sdcb.RotationDetector.Tests/bin/Debug/net8.0/* test-artifacts/Sdcb.RotationDetector.Tests
+        rsync -a --mkpath tests/Sdcb.PaddleInference.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.PaddleInference.Tests
+        rsync -a --mkpath tests/Sdcb.PaddleNLP.Lac.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.PaddleNLP.Lac.Tests
+        rsync -a --mkpath tests/Sdcb.PaddleOCR.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.PaddleOCR.Tests
+        rsync -a --mkpath tests/Sdcb.RotationDetector.Tests/bin/Debug/net8.0/ test-artifacts/Sdcb.RotationDetector.Tests
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
