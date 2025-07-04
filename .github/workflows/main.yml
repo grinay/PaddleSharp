@@ -28,15 +28,14 @@ jobs:
       run: |
         for proj in ${{ env.TEST_PROJECTS }}; do
           echo "::group::Create artifacts for $proj"
-          dst="test-artifacts/$proj"
-          mkdir -p "$dst"
-          cp -r "tests/$proj/bin/Debug/net8.0/"* "$dst/"
+          mkdir -p test-artifacts/$proj
+          cp -r "tests/$proj/bin/Debug/net8.0/"* "test-artifacts/$proj/"
           echo "::endgroup::"
         done
 
     - name: Compress test artifacts
       run: |
-        7z a -t7z -mx=1 -ms=on -mnt=on test-artifacts.7z test-artifacts
+        7z a -t7z -mx=1 -ms=on -mmt=on test-artifacts.7z test-artifacts
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -67,8 +66,7 @@ jobs:
       run: |
         for proj in ${{ env.TEST_PROJECTS }}; do
           echo "::group::Run $proj"
-          dotnet test \
-            "$PWD/test-artifacts/$proj/$proj.dll" \
-            -c Debug --no-build --verbosity detailed -p:Optimize=true
+          cd "$PWD/test-artifacts/$proj"
+          dotnet test -c Debug --no-build --verbosity detailed -p:Optimize=true $proj.dll
           echo "::endgroup::"
         done
