@@ -69,7 +69,6 @@ jobs:
       run: |
         for proj in ${{ env.TEST_PROJECTS }}; do
           echo "::group::Run $proj"
-          cd ~/test-artifacts/$proj
-          dotnet test --verbosity detailed $proj.dll
+          dotnet test --verbosity detailed ./test-artifacts/$proj/$proj.dll
           echo "::endgroup::"
         done
