@@ -61,7 +61,7 @@ jobs:
     - name: Extract test artifacts
       shell: bash
       run: |
-        7z x test-artifacts.7z -otest-artifacts
+        7z x test-artifacts.7z
         ls -lR test-artifacts
 
     - name: Test
