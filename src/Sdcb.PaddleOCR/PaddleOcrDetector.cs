@@ -116,21 +116,19 @@ public class PaddleOcrDetector : IDisposable
         try
         {
             using Mat pred = Mat.FromPixelData(height, width, MatType.CV_32FC1, dataGcHandle.AddrOfPinnedObject());
+            using Mat roi = pred[0, resizedSize.Height, 0, resizedSize.Width];
             using Mat cbuf = new();
-            {
-                using Mat roi = pred[0, resizedSize.Height, 0, resizedSize.Width];
-                roi.ConvertTo(cbuf, MatType.CV_8UC1, 255);
-            }
+            roi.ConvertTo(cbuf, MatType.CV_8UC1, 255);
             using Mat binary = BoxThreshold != null ?
                 cbuf.Threshold((int)(BoxThreshold * 255), 255, ThresholdTypes.Binary) :
-                cbuf;
+                cbuf.Clone();
 
             Point[][] contours = binary.FindContoursAsArray(RetrievalModes.List, ContourApproximationModes.ApproxSimple);
             Size size = src.Size();
             double scaleRate = 1.0 * src.Width / resizedSize.Width;
 
             RotatedRect[] rects = contours
-                .Where(x => BoxScoreThreahold == null || GetScore(x, pred) > BoxScoreThreahold)
+                .Where(x => BoxScoreThreahold == null || GetScore(x, roi) > BoxScoreThreahold)
                 .Select(x =>
                 {
                     RotatedRect rect = Cv2.MinAreaRect(x);
@@ -240,30 +238,38 @@ public class PaddleOcrDetector : IDisposable
     {
         int width = pred.Width;
         int height = pred.Height;
-        int[] boxX = contour.Select(v => v.X).ToArray();
-        int[] boxY = contour.Select(v => v.Y).ToArray();
 
-        int xmin = MathUtil.Clamp(boxX.Min(), 0, width - 1);
-        int xmax = MathUtil.Clamp(boxX.Max(), 0, width - 1);
-        int ymin = MathUtil.Clamp(boxY.Min(), 0, height - 1);
-        int ymax = MathUtil.Clamp(boxY.Max(), 0, height - 1);
+        // Clamp contour points to bounds to avoid negatives/out-of-range
+        Point[] clampedPoints = contour
+            .Select(p => new Point(MathUtil.Clamp(p.X, 0, width - 1), MathUtil.Clamp(p.Y, 0, height - 1)))
+            .ToArray();
 
-        Point[] rootPoints = contour
+        int xmin = clampedPoints.Min(p => p.X);
+        int xmax = clampedPoints.Max(p => p.X);
+        int ymin = clampedPoints.Min(p => p.Y);
+        int ymax = clampedPoints.Max(p => p.Y);
+
+        int roiWidth = xmax - xmin + 1;
+        int roiHeight = ymax - ymin + 1;
+        if (roiWidth <= 0 || roiHeight <= 0)
+        {
+            return 0f;
+        }
+
+        Point[] rootPoints = clampedPoints
             .Select(v => new Point(v.X - xmin, v.Y - ymin))
             .ToArray();
-        using Mat mask = new(ymax - ymin + 1, xmax - xmin + 1, MatType.CV_8UC1, Scalar.Black);
-        mask.FillPoly(new[] { rootPoints }, new Scalar(1));
+
+        using Mat mask = new(roiHeight, roiWidth, MatType.CV_8UC1, Scalar.Black);
+        mask.FillPoly(new[] { rootPoints }, new Scalar(255));
+
+        if (Cv2.CountNonZero(mask) == 0)
+        {
+            return 0f;
+        }
 
         using Mat croppedMat = pred[ymin, ymax + 1, xmin, xmax + 1];
         float score = (float)croppedMat.Mean(mask).Val0;
-
-        // Debug
-        //{
-        //	using Mat cu = new Mat();
-        //	croppedMat.ConvertTo(cu, MatType.CV_8UC1, 255);
-        //	Util.HorizontalRun(true, Image(cu), Image(mask), score).Dump();
-        //}
-
         return score;
     }
 
